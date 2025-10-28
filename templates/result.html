@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Status Check Result - Is It Down?{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Check
+            </a>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-{{ 'check-circle' if result.success else 'exclamation-triangle' }} me-2"></i>
+                    Status Check Result
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h6><i class="fas fa-bullseye me-2"></i>Target:</h6>
+                        <code class="bg-light p-2 rounded">{{ target }}</code>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-clock me-2"></i>Status:</h6>
+                        {% if result.success %}
+                            {% if result.is_site_up %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>UP
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times me-1"></i>DOWN
+                                </span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-danger">
+                                <i class="fas fa-exclamation me-1"></i>ERROR
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+
+                {% if result.success %}
+                    {% if result.output or result.error %}
+                    <div class="mb-4">
+                        <h6><i class="fas fa-list-alt me-2"></i>Output:</h6>
+                        <div class="terminal-output bg-dark text-light p-3 rounded">
+                            {% if result.output %}
+                                <pre class="mb-0 text-light">{{ result.output }}</pre>
+                            {% endif %}
+                            {% if result.error %}
+                                <pre class="mb-0 text-warning">{{ result.error }}</pre>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if result.return_code is not none %}
+                    <div class="mb-4">
+                        <h6><i class="fas fa-info-circle me-2"></i>Exit Code:</h6>
+                        <span class="badge bg-{{ 'success' if result.is_site_up else 'danger' }}">
+                            {{ result.return_code }}
+                        </span>
+                        {% if result.is_site_up %}
+                            <small class="text-success ms-2">Site Reachable</small>
+                        {% else %}
+                            <small class="text-danger ms-2">Site Unreachable</small>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-danger">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Error:</h6>
+                        <p class="mb-0">{{ result.error }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h6 class="text-primary">
+                            <i class="fas fa-redo me-2"></i>Check Another
+                        </h6>
+                        <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">
+                            New Check
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-scroll terminal output if too long
+document.addEventListener('DOMContentLoaded', function() {
+    const terminalOutputs = document.querySelectorAll('.terminal-output');
+    terminalOutputs.forEach(function(output) {
+        if (output.scrollHeight > 300) {
+            output.style.maxHeight = '300px';
+            output.style.overflowY = 'auto';
+        }
+    });
+});
+</script>
+{% endblock %}

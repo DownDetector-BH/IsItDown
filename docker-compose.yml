@@ -1,0 +1,32 @@
+services:
+  is-it-down-ctf:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    restart: unless-stopped
+    container_name: isitdown_ctf
+    
+    read_only: true
+    tmpfs:
+      - /tmp:size=50M,noexec,nosuid,nodev
+      - /var/tmp:size=10M,noexec,nosuid,nodev
+      - /run:size=10M,noexec,nosuid,nodev
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_RAW  # Required for ping
+    security_opt:
+      - no-new-privileges:true
+      - apparmor:unconfined
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M

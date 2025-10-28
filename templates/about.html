@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}About - Is It Down?{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Check
+            </a>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>About Is It Down?
+                </h4>
+            </div>
+            <div class="card-body">
+                <h5><i class="fas fa-question-circle me-2 text-primary"></i>What is this?</h5>
+                <p>
+                    Is It Down? is a simple web service that helps you check if websites and servers 
+                    are accessible from our network. Simply enter a domain name or IP address, 
+                    and we'll ping it to see if it responds.
+                </p>
+
+                <hr>
+
+                <h5><i class="fas fa-lightbulb me-2 text-primary"></i>Usage Tips</h5>
+                <ul>
+                    <li><strong>Domain names:</strong> google.com, github.com, example.org</li>
+                    <li><strong>IP addresses:</strong> 8.8.8.8, 192.168.1.1, 127.0.0.1</li>
+                    <li><strong>Subdomains:</strong> www.example.com, api.github.com</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>Technical Details</h6>
+                    <p class="mb-0">
+                        This service uses the standard <code>ping</code> command to test connectivity.
+                        Results include response times, packet loss, and basic network information.
+                    </p>
+                </div>
+
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Disclaimer</h6>
+                    <p class="mb-0">
+                        This tool is provided as-is for testing purposes. 
+                        Please use responsibly and only test connectivity to systems you own 
+                        or have permission to test.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
